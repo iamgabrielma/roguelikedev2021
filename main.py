@@ -24,7 +24,8 @@ def main() -> None:
 
     # Instantiate the player Entity and add it to our entities dictionary
     player = Entity(int(screen_width/2), int(screen_height/2), "@", (255, 255, 255))
-    entities = {player}
+    enemy = Entity(int(screen_width/(2-5)), int(screen_height/2), "@", (255, 255, 0))
+    entities = {player, enemy}
 
     engine = Engine(entities= entities , event_handler= event_handler, player= player)
 
