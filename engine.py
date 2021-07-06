@@ -24,12 +24,14 @@ class Engine:
 
 		"""
 		for event in events:
-			action = self.event_handler.dispatch(event)
+			action = self.event_handler.dispatch(event) # we send the event to our event_handler dispatch method, which will return an action as response
 
 			if action is None:
 				continue
+
 			if isinstance(action, MovementAction):
 				self.player.move(dx=action.dx, dy=action.dy)
+
 			elif isinstance(action, EscapeAction):
 				raise SystemExit()
 
@@ -40,6 +42,6 @@ class Engine:
 		for entity in self.entities:
 			console.print(entity.x, entity.y, entity.char, fg=entity.color)
 
-		context.present(console)
-		console.clear()
+		context.present(console) # present() is what will print on screen, is like the loop Update() method
+		console.clear() # We clear the console before running the next loop
 		
