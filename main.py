@@ -3,6 +3,7 @@
 import tcod
 from actions import EscapeAction, MovementAction
 from input_handlers import EventHandler
+from entity import Entity
 
 def testing_func():
     return "Testing"
@@ -13,9 +14,9 @@ def main() -> None:
     screen_width = 80
     screen_height = 50
 
-    # Player Movement
-    player_x = int(screen_width/2)
-    player_y = int(screen_height / 2)
+    # Player Movement --> We've moved this to use the Entity class instead.
+    # player_x = int(screen_width/2)
+    # player_y = int(screen_height / 2)
 
     # Which font to use
     tileset = tcod.tileset.load_tilesheet(
@@ -24,6 +25,9 @@ def main() -> None:
 
     # Instanciate our event handler
     eventHandler = EventHandler()
+
+    # Instantiate the player Entity
+    player = Entity(int(screen_width/2), int(screen_height/2), "@", (255, 255, 255))
 
     # Creates the screen ( the Terminal )
     with tcod.context.new_terminal(
@@ -38,7 +42,7 @@ def main() -> None:
         root_console = tcod.Console(screen_width, screen_height, order="F")
         # Game loop starts:
         while True:
-            root_console.print(x=player_x, y=player_y, string="@")
+            root_console.print(x=player.x, y=player.y, string=player.char, fg=player.color)
             # present() is what will print on screen, is like the loop Update() method
             context.present(root_console)
             root_console.clear() # We clear the console before running the next loop
@@ -49,8 +53,7 @@ def main() -> None:
                 if action is None:
                     continue
                 if isinstance(action, MovementAction): # TODO: Research isinstance()
-                    player_x += action.dx
-                    player_y += action.dy
+                    player.move(dx=action.dx, dy=action.dy)
                 if isinstance(action, EscapeAction):
                     raise SystemExit()
 
