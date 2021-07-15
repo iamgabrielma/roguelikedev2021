@@ -4,6 +4,7 @@ import tcod
 from input_handlers import EventHandler
 from entity import Entity
 from engine import Engine
+from game_map import GameMap
 
 def testing_func():
     return "Testing"
@@ -13,6 +14,8 @@ def main() -> None:
     # Screen size
     screen_width = 80
     screen_height = 50
+    map_width = 80
+    map_height = 50
 
     # Which font to use
     tileset = tcod.tileset.load_tilesheet(
@@ -27,7 +30,11 @@ def main() -> None:
     enemy = Entity(int(screen_width/(2-5)), int(screen_height/2), "@", (255, 255, 0))
     entities = {player, enemy}
 
-    engine = Engine(entities= entities , event_handler= event_handler, player= player)
+    # Map
+    game_map = GameMap(map_width,map_height)
+
+    # Pass everything into the Engine
+    engine = Engine(entities=entities, event_handler=event_handler, game_map=game_map, player=player)
 
     # Creates the screen ( the Terminal )
     with tcod.context.new_terminal(
