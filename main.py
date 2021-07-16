@@ -4,7 +4,8 @@ import tcod
 from input_handlers import EventHandler
 from entity import Entity
 from engine import Engine
-from game_map import GameMap
+#from game_map import GameMap --> Out, moving to proc gen dungeons
+from procGen import generate_dungeon
 
 def testing_func():
     return "Testing"
@@ -22,7 +23,7 @@ def main() -> None:
         "dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
     )
 
-    # Instanciate our event handler
+    # Instantiate our event handler
     event_handler = EventHandler()
 
     # Instantiate the player Entity and add it to our entities dictionary
@@ -31,7 +32,8 @@ def main() -> None:
     entities = {player, enemy}
 
     # Map
-    game_map = GameMap(map_width,map_height)
+    #game_map = GameMap(map_width,map_height)
+    game_map = generate_dungeon(map_width, map_height)
 
     # Pass everything into the Engine
     engine = Engine(entities=entities, event_handler=event_handler, game_map=game_map, player=player)
@@ -41,7 +43,7 @@ def main() -> None:
             screen_width,
             screen_height,
             tileset=tileset, # Tileset we've previously defined
-            title="Oxygen",
+            title="PlagueRogue",
             vsync=True, # TODO: Check what does vsync do
     ) as context:
         # Creates the Console inside the Terminal, we're also fitting the Console to the Terminal screen

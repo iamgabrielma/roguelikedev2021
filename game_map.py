@@ -8,11 +8,12 @@ class GameMap:
 
         self.width = width
         self.height = height
-        # Numpy 2D array filled with tile_type.floor
-        self.tiles = np.full( (width,height), fill_value = tile_types.floor, order="F")
+        # Numpy 2D array filled with tile_type.floor --> Out, as we'll start filling everything will walls, and then carving the floors.
+        #self.tiles = np.full( (width,height), fill_value = tile_types.floor, order="F")
+        self.tiles = np.full((width, height), fill_value=tile_types.wall, order="F")
 
         # TEST: Creates a 3-tile-wide-wall at the specified location
-        self.tiles[30:33, 22] = tile_types.wall
+        # self.tiles[30:33, 22] = tile_types.wall
 
     def in_bounds(self, x: int, y: int) -> bool:
         """Return True if x and y are inside of the bounds of this map."""
