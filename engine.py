@@ -1,10 +1,10 @@
-from typing import Set, Iterable, Any
+	from typing import Set, Iterable, Any
 
 from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
 
-from actions import EscapeAction, MovementAction
+#from actions import EscapeAction, MovementAction
 from entity import Entity
 from input_handlers import EventHandler
 from game_map import GameMap
@@ -36,13 +36,14 @@ class Engine:
 			## Update the FOV before the players next action.
 			self.update_fov()
 
-			if isinstance(action, MovementAction):
-				#self.player.move(dx=action.dx, dy=action.dy)
-				if self.game_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
-					self.player.move(dx=action.dx, dy=action.dy)
-
-			elif isinstance(action, EscapeAction):
-				raise SystemExit()
+			action.perform(self, self.player)
+			# if isinstance(action, MovementAction):
+			# 	#self.player.move(dx=action.dx, dy=action.dy)
+			# 	if self.game_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
+			# 		self.player.move(dx=action.dx, dy=action.dy)
+			#
+			# elif isinstance(action, EscapeAction):
+			# 	raise SystemExit()
 
 	def update_fov(self) -> None:
 	"""Recomputes the visible area based on the players point of view."""
