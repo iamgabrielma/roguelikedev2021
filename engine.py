@@ -1,5 +1,4 @@
-	from typing import Set, Iterable, Any
-
+from typing import Set, Iterable, Any
 from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
@@ -33,10 +32,11 @@ class Engine:
 			if action is None:
 				continue
 
+			action.perform(self, self.player)
+
 			## Update the FOV before the players next action.
 			self.update_fov()
 
-			action.perform(self, self.player)
 			# if isinstance(action, MovementAction):
 			# 	#self.player.move(dx=action.dx, dy=action.dy)
 			# 	if self.game_map.tiles["walkable"][self.player.x + action.dx, self.player.y + action.dy]:
@@ -44,14 +44,9 @@ class Engine:
 			#
 			# elif isinstance(action, EscapeAction):
 			# 	raise SystemExit()
-
-	def update_fov(self) -> None:
-	"""Recomputes the visible area based on the players point of view."""
-		self.game_map.visible[:] = compute_fov(
-			self.game_map.tiles["transparent"],
-			(self.player.x, self.player.y),
-			radius=8,
-		)
+	def update_fov(self):
+		# Recompute the visible area based on the players point of view.
+		self.game_map.visible[:] = compute_fov(self.game_map.tiles["transparent"],(self.player.x, self.player.y),radius=8)
 		# If a tile is "visible" it should be added to "explored".
 		self.game_map.explored |= self.game_map.visible
 
