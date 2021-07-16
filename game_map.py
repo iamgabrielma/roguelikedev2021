@@ -12,6 +12,10 @@ class GameMap:
         #self.tiles = np.full( (width,height), fill_value = tile_types.floor, order="F")
         self.tiles = np.full((width, height), fill_value=tile_types.wall, order="F")
 
+        # FOV implementation:
+        self.visible = np.full((width, height), fill_value=False, order="F") # Tiles the Player can currently see
+        self.explored = np.full((width, height), fill_value=False, order="F")  # Tiles the Player has seen before
+
         # TEST: Creates a 3-tile-wide-wall at the specified location
         # self.tiles[30:33, 22] = tile_types.wall
 
@@ -22,4 +26,9 @@ class GameMap:
 
     def render(self, console: Console) -> None:
         # Using the Console class’s tiles_rgb method, we can quickly render the entire map. This method proves much faster than using the console.print method that we use for the individual entities.
-        console.tiles_rgb[0:self.width, 0:self.height] = self.tiles["dark"]
+        #console.tiles_rgb[0:self.width, 0:self.height] = self.tiles["dark"] --> Implementing FOV:
+        console.tiles_rgb[0:self.width, 0:self.height] = np.select(
+            condlist = [self.visible, self.explored],
+            choicelist = [self.tiles["light"], self.tiles["dark"]],
+            default = tile_types.SHROUD
+        )
